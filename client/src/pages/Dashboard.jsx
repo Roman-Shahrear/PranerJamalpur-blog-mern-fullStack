@@ -6,15 +6,14 @@ import DashboardProfile from "../components/DashboardProfile";
 
 export default function Dashboard() {
   const location = useLocation();
-  const [tab, setTab] = useState("");
-  
-  useEffect(()=>{
+  const [tab, setTab] = useState('');
+  useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const tabFormUrl = urlParams.get("tab");
-    if(tabFormUrl){
-      setTab(tabFormUrl);
+    const tabFromUrl = urlParams.get('tab');
+    if (tabFromUrl) {
+      setTab(tabFromUrl);
     }
-  },[location.search]);
+  }, [location.search]);
   return (
     <div  className="min-h-screen flex flex-col md:flex-row">
       <div className="md:w-56">
