@@ -1,29 +1,68 @@
 import { FileInput, Select, TextInput, Button, Alert } from "flowbite-react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from "firebase/storage";
 import { app } from "../firebase.js";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
-export default function CreatePost() {
+export default function UpdatePost() {
   const navigate = useNavigate();
-
+  const { postId } = useParams();
   const [imageFiles, setImageFiles] = useState([]);
   const [videoFiles, setVideoFiles] = useState([]);
   const [uploadProgress, setUploadProgress] = useState(null);
   const [uploadError, setUploadError] = useState(null);
   const [publishError, setPublishError] = useState(null);
-  const [formData, setFormData] = useState({});
-  
+  const [formData, setFormData] = useState({
+    title: '',
+    category: 'uncategorized',
+    image: [],
+    video: [],
+    content: '',
+  });
+  const [adminWantsToDeletePreviousImages, setAdminWantsToDeletePreviousImages] = useState(false);
+  const [adminWantsToDeletePreviousVideos, setAdminWantsToDeletePreviousVideos] = useState(false);
+
+  useEffect(() => {
+    try {
+      const fetchPost = async () => {
+        const res = await fetch(`/api/post/getposts?postId=${postId}`);
+        const data = await res.json();
+        if (!res.ok) {
+          console.log(data.message);
+          setPublishError(data.message);
+          return;
+        }
+        if (res.ok) {
+          setPublishError(null);
+          setFormData(data.posts[0]);
+          console.log("Fetched Post Data:", data.posts[0]);
+        }
+      };
+
+      fetchPost();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }, [postId]);
+
   const handleImageFileChange = (e) => {
     setImageFiles([...imageFiles, ...Array.from(e.target.files)]);
   };
 
   const handleVideoFileChange = (e) => {
     setVideoFiles([...videoFiles, ...Array.from(e.target.files)]);
+  };
+
+  const handleAdminDeleteImagesChange = () => {
+    setAdminWantsToDeletePreviousImages((prev) => !prev);
+  };
+
+  const handleAdminDeleteVideosChange = () => {
+    setAdminWantsToDeletePreviousVideos((prev) => !prev);
   };
 
   const handleUploadFiles = async () => {
@@ -41,7 +80,22 @@ export default function CreatePost() {
       const imageUploadPromises = [];
       const videoUploadPromises = [];
 
-      // Upload images
+      // Delete previous images and videos if admin wishes
+      if (formData.image.length > 0 && adminWantsToDeletePreviousImages) {
+        formData.image.forEach((imageUrl) => {
+          const imageRef = ref(storage, imageUrl);
+          deleteObject(imageRef);
+        });
+      }
+
+      if (formData.video.length > 0 && adminWantsToDeletePreviousVideos) {
+        formData.video.forEach((videoUrl) => {
+          const videoRef = ref(storage, videoUrl);
+          deleteObject(videoRef);
+        });
+      }
+
+      // Upload new images
       imageFiles.forEach((imageFile) => {
         const imageFileName = new Date().getTime() + "-image-" + imageFile.name;
         const imageStorageRef = ref(storage, imageFileName);
@@ -49,14 +103,11 @@ export default function CreatePost() {
         imageUploadPromises.push(imageUploadTask);
       });
 
-      // Upload videos
+      // Upload new videos
       videoFiles.forEach((videoFile) => {
         const videoFileName = new Date().getTime() + "-video-" + videoFile.name;
         const videoStorageRef = ref(storage, videoFileName);
-        const videoUploadTask = uploadBytesResumable(
-          videoStorageRef,
-          videoFile
-        );
+        const videoUploadTask = uploadBytesResumable(videoStorageRef, videoFile);
         videoUploadPromises.push(videoUploadTask);
       });
 
@@ -111,9 +162,12 @@ export default function CreatePost() {
 
       console.log("Image URLs:", imageUrls);
       console.log("Video URLs:", videoUrls);
+
       setUploadProgress(null);
       setUploadError(null);
-      setFormData({ ...formData, images: imageUrls, videos: videoUrls });
+
+      // Update the state correctly
+      setFormData({ ...formData, image: imageUrls, video: videoUrls });
       console.log("Upload completed successfully");
     } catch (error) {
       setUploadError("File upload failed");
@@ -122,14 +176,12 @@ export default function CreatePost() {
     }
   };
 
-  
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try{
-        console.log("Form Data:", formData); // Log the form data for debugging
-        const res = await fetch("/api/post/create", {
-        method: "POST",
+    try {
+      console.log("Form Data:", formData);
+      const res = await fetch(`/api/post/updatepost/${formData._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -137,7 +189,7 @@ export default function CreatePost() {
       });
 
       const data = await res.json();
-      if(!res.ok){
+      if (!res.ok) {
         if (data.error && data.error.includes("Post with this title already exists.")) {
           setPublishError("Post with this title already exists. Please choose a different title.");
         } else {
@@ -154,12 +206,10 @@ export default function CreatePost() {
       setPublishError("Something went wrong");
     }
   };
-  
-  
 
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
-      <h1 className="text-center text-3xl my-7 font-semibold">Create a post</h1>
+      <h1 className="text-center text-3xl my-7 font-semibold">Update a post</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
@@ -171,11 +221,13 @@ export default function CreatePost() {
             onChange={(e) =>
               setFormData({ ...formData, title: e.target.value })
             }
+            value={formData.title}
           />
           <Select
             onChange={(e) =>
               setFormData({ ...formData, category: e.target.value })
             }
+            value={formData.category}
           >
             <option value="uncategorized">Select a category</option>
             <option value="currentAffairs">Current Affairs</option>
@@ -197,6 +249,26 @@ export default function CreatePost() {
             multiple
             onChange={handleVideoFileChange}
           />
+          <div>
+            <label className="text-sm text-red-500">
+              Delete Previous Images:
+              <input
+                style={{borderRadius: '8px', border: "1px solid black" }}
+                type="checkbox"
+                onChange={handleAdminDeleteImagesChange}
+              />
+            </label>
+          </div>
+          <div>
+            <label className="text-sm text-red-500 ">
+              Delete Previous Videos:
+              <input
+                style={{borderRadius: '8px', border: "1px solid black" }}
+                type="checkbox"
+                onChange={handleAdminDeleteVideosChange}
+              />
+            </label>
+          </div>
           <Button
             type="button"
             gradientDuoTone="purpleToBlue"
@@ -219,9 +291,9 @@ export default function CreatePost() {
         </div>
         {uploadError && <Alert color="failure">{uploadError}</Alert>}
 
-        {formData.images && formData.images.length > 0 && (
+        {formData.image && formData.image.length > 0 && (
           <div className="flex gap-4">
-            {formData.images.map((imageUrl, index) => (
+            {formData.image.map((imageUrl, index) => (
               <img
                 key={index}
                 src={imageUrl}
@@ -232,9 +304,9 @@ export default function CreatePost() {
           </div>
         )}
 
-        {formData.videos && formData.videos.length > 0 && (
+        {formData.video && formData.video.length > 0 && (
           <div className="flex gap-4">
-            {formData.videos.map((videoUrl, index) => (
+            {formData.video.map((videoUrl, index) => (
               <video key={index} controls className="w-full h-72 object-cover">
                 <source src={videoUrl} type="video/mp4" />
                 Your browser does not support the video tag.
@@ -250,9 +322,10 @@ export default function CreatePost() {
           onChange={(value) => {
             setFormData({ ...formData, content: value });
           }}
+          value={formData.content}
         />
         <Button type="submit" gradientDuoTone="purpleToPink">
-          Publish
+          Update Post
         </Button>
         {publishError && (
           <Alert color="failure" className="mt-5">
@@ -263,3 +336,4 @@ export default function CreatePost() {
     </div>
   );
 }
+
