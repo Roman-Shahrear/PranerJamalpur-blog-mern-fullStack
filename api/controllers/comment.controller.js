@@ -1,4 +1,5 @@
-import Comment from '../models/comment.model.js';
+import Comment from "../models/comment.model.js";
+import { errorHandler } from "../utils/error.js";
 
 export const createComment = async (req, res, next) => {
   try {
@@ -19,6 +20,7 @@ export const createComment = async (req, res, next) => {
 
     res.status(200).json(newComment);
   } catch (error) {
+    console.log("Error in createComment:", error);
     next(error);
   }
 };
