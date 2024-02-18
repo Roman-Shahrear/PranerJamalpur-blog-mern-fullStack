@@ -10,9 +10,6 @@ export const verifyToken = (req, res, next) => {
     if (err) {
       return next(errorHandler(401, `Unauthorized: Token verification failed`));
     }
-    if (!user.isAdmin) {
-      return next(errorHandler(403, 'You are not allowed to see all users'));
-    }
     req.user = user;
     next();
   });

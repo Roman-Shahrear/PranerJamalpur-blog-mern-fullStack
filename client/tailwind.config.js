@@ -22,6 +22,7 @@
 
 import flowbitePlugin from 'flowbite/plugin';
 import tailwindScrollbar from 'tailwind-scrollbar';
+// import lineClampPlugin from '@tailwindcss/line-clamp';
 
 /** @type {import('tailwindcss').Config} */
 const tailwindConfig = {
@@ -37,6 +38,7 @@ const tailwindConfig = {
   plugins: [
     flowbitePlugin(),
     tailwindScrollbar(),
+    // lineClampPlugin()
   ],
 };
 
