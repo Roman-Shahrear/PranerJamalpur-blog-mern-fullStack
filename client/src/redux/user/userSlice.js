@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { produce } from "immer";
 
 const initialState = {
     currentUser: null,
     error: null,
-    loading: false
+    loading: false,
 }
 
 const userSlice = createSlice({

@@ -4,6 +4,10 @@ import { useParams, NavLink } from "react-router-dom";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
 import PostCards from "../components/PostCards";
+import PostReact from "../components/PostReact";
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 export default function PostPage() {
     const { postSlug } = useParams();
@@ -11,7 +15,9 @@ export default function PostPage() {
     const [error, setError] = useState(false);
     const [post, setPost] = useState(null);
     const [recentPosts, setRecentPosts] = useState(null);
-
+    const navigate = useNavigate();
+    const { currentUser } = useSelector((state) => state.user);
+    
     useEffect(() => {
         const fetchPost = async () => {
             try {
@@ -36,7 +42,7 @@ export default function PostPage() {
     useEffect(() => {
         try {
           const fetchRecentPosts = async () => {
-            const res = await fetch(`/api/post/getposts?limit=4`);
+            const res = await fetch(`/api/post/getposts?limit=6`);
             const data = await res.json();
             if (res.ok) {
               setRecentPosts(data.posts);
@@ -47,7 +53,55 @@ export default function PostPage() {
           console.log(error.message);
         }
       }, []);
-
+    
+      const handleLike = async () => {
+        try {
+          if (!currentUser) {
+            navigate('/sign-in');
+            return;
+          }
+      
+          const response = await fetch(`/api/post/likepost/${post._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            setPost(true);
+          } else {
+            console.error('Failed to like the post');
+          }
+        } catch (error) {
+          console.error('Error handling like:', error);
+        }
+      };
+      
+      const handleLove = async () => {
+        try {
+          if (!currentUser) {
+            navigate('/sign-in');
+            return;
+          }
+      
+          const response = await fetch(`/api/post/lovepost/${post._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+      
+          if (response.ok) {
+            setPost(true);
+          } else {
+            console.error('Failed to love the post');
+          }
+        } catch (error) {
+          console.error('Error handling love:', error);
+        }
+      };
+   
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-screen">
@@ -106,14 +160,17 @@ export default function PostPage() {
             <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
                 <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
                 <span className="italic">
-                    {post && (post.content.length / 1000).toFixed(0)} mins read
+                    {post && post.content && (post.content.length / 1000).toFixed(0)} mins read
                 </span>
+
             </div>
             <div
                 className="p-3 max-w-2xl mx-auto w-full post-content"
                 dangerouslySetInnerHTML={{ __html: post?.content }}
             >
-
+            </div>
+            <div>
+                <PostReact key={post._id} post={post} onLike={handleLike} onLove={handleLove}/>
             </div>
             <div className='max-w-4xl mx-auto w-full'>
                 <CallToAction />

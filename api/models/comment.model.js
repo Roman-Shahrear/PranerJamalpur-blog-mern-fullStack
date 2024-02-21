@@ -14,11 +14,21 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    likes: {
-      type: Array,
-      default: [],
-    },
-    numberOfLikes: {
+    likes: [{
+      userId: {
+          type: String,
+      },
+  }],
+  loves: [{
+      userId: {
+          type: String,
+      },
+  }],
+  numberOfLikes: {
+      type: Number,
+      default: 0,
+  },
+  numberOfLoves: {
       type: Number,
       default: 0,
     },

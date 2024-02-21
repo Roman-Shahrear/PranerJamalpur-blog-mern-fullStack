@@ -115,7 +115,7 @@ export default function DashPosts() {
                                             {post.title}
                                         </Link>
                                     </TableCell>
-                                    <TableCell>{post.category}</TableCell>
+                                    <TableCell  className="font-bold">{post.category}</TableCell>
                                     <TableCell>
                                         <span onClick={()=>{
                                             setShowModal(true);

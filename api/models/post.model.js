@@ -30,7 +30,25 @@ const postSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-}, { timestamps: true}
+    likes: [{
+        userId: {
+            type: String,
+        },
+    }],
+    loves: [{
+        userId: {
+            type: String,
+        },
+    }],
+    numberOfLikes: {
+        type: Number,
+        default: 0,
+    },
+    numberOfLoves: {
+        type: Number,
+        default: 0,
+    },
+},{ timestamps: true}
 );
 
 
