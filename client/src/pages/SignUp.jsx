@@ -75,7 +75,7 @@ export default function SignUp() {
             <Label value="Your password" />
             <TextInput type="password" placeholder="password" id="password" onChange={handleChange} />
           </div>
-          <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
+          <Button gradientDuoTone="greenToBlue" type="submit" disabled={loading}>
             {
               loading ? (
                 <>

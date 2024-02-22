@@ -18,6 +18,7 @@ export default function PostPage() {
     const navigate = useNavigate();
     const { currentUser } = useSelector((state) => state.user);
     
+    
     useEffect(() => {
         const fetchPost = async () => {
             try {
@@ -69,7 +70,8 @@ export default function PostPage() {
           });
       
           if (response.ok) {
-            setPost(true);
+            const updatedPost = await response.json();
+            setPost(updatedPost);
           } else {
             console.error('Failed to like the post');
           }
@@ -93,7 +95,8 @@ export default function PostPage() {
           });
       
           if (response.ok) {
-            setPost(true);
+            const updatedPost = await response.json();
+            setPost(updatedPost);
           } else {
             console.error('Failed to love the post');
           }
@@ -101,22 +104,32 @@ export default function PostPage() {
           console.error('Error handling love:', error);
         }
       };
-   
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center min-h-screen">
-                <Spinner size="xl" />
-            </div>
-        );
-    }
 
-    if (error || !post) {
+    
+      if (loading) {
         return (
-            <div className="text-center mt-10">
-                <p>An error occurred while fetching the post.</p>
-            </div>
+          <div className="flex justify-center items-center min-h-screen">
+            <Spinner size="xl" />
+          </div>
         );
-    }
+      }
+
+   
+    if (error) {
+      return (
+          <div className="flex justify-center items-center min-h-screen">
+              <p>An error occurred while fetching the post.</p>
+          </div>
+      );
+  }
+
+  // if (!post || typeof post !== 'object' || !post._id) {
+  //   return (
+  //       <div className="flex justify-center items-center min-h-screen">
+  //           <p>No post found or invalid post data.</p>
+  //       </div>
+  //   );
+  // }
 
     return (
         <main className="p-3 flex flex-col max-w-6xl mx-auto min-h-screen">
@@ -127,7 +140,8 @@ export default function PostPage() {
                 to={`/search?category=${post?.category}`}
                 className="self-center mt-5 text-md font-extrabold"
             >
-                <Button color="gray" pill  size="sm" gradientDuoTone="purpleToPink" outline >
+                <Button color="gray" pill  size="sm"  gradientDuoTone="greenToBlue" outline >
+                {/* gradientDuoTone="purpleToPink" */}
                     {post?.category}
                 </Button>
             </NavLink>
@@ -169,9 +183,15 @@ export default function PostPage() {
                 dangerouslySetInnerHTML={{ __html: post?.content }}
             >
             </div>
-            <div>
+            {/* <div>
                 <PostReact key={post._id} post={post} onLike={handleLike} onLove={handleLove}/>
-            </div>
+            </div> */}
+
+            {post && (
+              <div>
+                <PostReact key={post._id} post={post} onLike={handleLike} onLove={handleLove}/>
+              </div>
+            )}
             <div className='max-w-4xl mx-auto w-full'>
                 <CallToAction />
             </div>

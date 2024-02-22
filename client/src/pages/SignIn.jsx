@@ -55,7 +55,7 @@ export default function SignIn() {
           {/* left-side*/}
       <div className="flex-1">
       <Link to="/" className="font-bold dark:text-white text-3xl">
-            <span className="px-2 py-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-lg text-white">Praner Jamalpur</span>
+            <span className="px-2 py-1 bg-gradient-to-r from-yellow-300 via-green-500 to-blue-300 rounded-lg text-white">প্রাণেরজামালপুর</span>
             Blog
         </Link>
         <p className="text-sm mt-5">This is a first Blog web application which from Praner Jamalpur group.Be connect with us as a group member using email and password
@@ -73,7 +73,7 @@ export default function SignIn() {
             <Label value="Your password" />
             <TextInput type="password" placeholder="***********" id="password" onChange={handleChange} />
           </div>
-          <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
+          <Button gradientDuoTone="greenToBlue" type="submit" disabled={loading}>
             {
               loading ? (
                 <>

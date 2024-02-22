@@ -10,7 +10,7 @@ export default function CallToAction() {
             <p className='text-gray-500 my-2'>
                 Checkout these resources with Official JavaScript documentation
             </p>
-            <Button gradientDuoTone='purpleToPink' className='rounded-tl-xl rounded-bl-none'>
+            <Button gradientDuoTone="greenToBlue" className='rounded-tl-xl rounded-bl-none'>
                 <a href="https://www.devdocs.io/javascript" target='_blank' rel='noopener noreferrer'>
                     JavaScript
                 </a>

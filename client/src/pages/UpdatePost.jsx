@@ -271,7 +271,7 @@ export default function UpdatePost() {
           </div>
           <Button
             type="button"
-            gradientDuoTone="purpleToBlue"
+            gradientDuoTone="greenToBlue"
             size="sm"
             outline
             onClick={handleUploadFiles}
@@ -324,7 +324,7 @@ export default function UpdatePost() {
           }}
           value={formData.content}
         />
-        <Button type="submit" gradientDuoTone="purpleToPink">
+        <Button type="submit" gradientDuoTone="greenToBlue">
           Update Post
         </Button>
         {publishError && (

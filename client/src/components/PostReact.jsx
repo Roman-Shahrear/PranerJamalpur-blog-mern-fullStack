@@ -1,72 +1,105 @@
 import { useEffect, useState } from 'react';
-import { FaThumbsUp, FaHeart } from 'react-icons/fa';
+import { AiFillLike } from 'react-icons/ai';
+import { BsFillHeartFill } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
+import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 
 const PostReact = ({ post, onLike, onLove }) => {
   const [loading, setLoading] = useState(true);
   const [postDetails, setPostDetails] = useState(null);
   const { currentUser } = useSelector((state) => state.user);
+  
 
   useEffect(() => {
     const getPost = async () => {
+      if (!post || !post._id) {
+        return;
+      }
+
       try {
         setLoading(true);
         const res = await fetch(`/api/post/${post._id}`);
         const data = await res.json();
+
         if (res.ok) {
+          console.log('Post data:', data);
           setPostDetails(data);
+        } else {
+          console.error(`Failed to fetch post. Status: ${res.status}, Message: ${data.message}`);
         }
       } catch (error) {
-        console.log(error.message);
+        console.error('An error occurred while fetching the post:', error);
+        setPostDetails(null);
       } finally {
         setLoading(false);
       }
     };
     if (post && post._id) {
+      console.log('Fetching post details...');
       getPost();
     }
-  }, [post._id]);
+  }, [post]);
 
+
+  useEffect(() => {
+  }, [postDetails]);
   
-
+  const shareUrl = postDetails ? `http://localhost:5173/post/${postDetails._id}` : null;
+  console.log(shareUrl);
   return (
     <>
       {!loading ? (
         <div className='flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2 mb-4'>
           <button
             type='button'
-            onClick={() => onLike(postDetails._id)}
+            onClick={() => postDetails && onLike(postDetails._id)}
             className={`text-gray-400 hover:text-blue-500 ${
-            currentUser &&
-              postDetails.likes.includes(currentUser._id) && 
-                'text-blue-500'
-              }`}
-                  >
-            <FaThumbsUp className='text-sm' />
-        </button>
+              currentUser &&
+              postDetails &&
+              postDetails.likes.includes(currentUser._id) &&
+              'text-blue-500'
+            }`}
+          >
+            <AiFillLike  className='text-xl' />
+          </button>
+
           <p className='text-gray-400'>
-            {postDetails.numberOfLikes > 0 &&
+            {postDetails && postDetails.numberOfLikes > 0 &&
               postDetails.numberOfLikes +
                 ' ' +
                 (postDetails.numberOfLikes === 1 ? 'like' : 'likes')}
           </p>
+
           <button
             type='button'
-            onClick={() => onLove(postDetails._id)}
-            className={`text-gray-400 hover:text-blue-500 ${
-            currentUser &&
+            onClick={() => postDetails && onLove(postDetails._id)}
+            className={`text-gray-400 hover:text-red-500 ${
+              currentUser &&
+              postDetails &&
               postDetails.likes.includes(currentUser._id) &&
-              'text-blue-500'
-              }`}
-                  >
-            <FaHeart className='text-sm' />
+              'text-red-500'
+            }`}
+          >
+              <BsFillHeartFill className='text-xl' />
           </button>
+
           <p className='text-gray-400'>
-            {postDetails.numberOfLoves > 0 &&
+            {postDetails && postDetails.numberOfLoves > 0 &&
               postDetails.numberOfLoves +
                 ' ' +
                 (postDetails.numberOfLoves === 1 ? 'love' : 'loves')}
           </p>
+
+          <FacebookShareButton url={shareUrl}>
+           <FacebookIcon logofillcolor='white' round={true} style={{ width: '30px', height: '30px' }}>
+           </FacebookIcon>
+          </FacebookShareButton>
+
+          <TwitterShareButton url={shareUrl}>
+            <TwitterIcon logofillcolor='white' round={true} style={{ width: '30px', height: '30px' }}>
+              
+            </TwitterIcon>
+          </TwitterShareButton>
         </div>
       ) : (
         <p>Loading...</p>

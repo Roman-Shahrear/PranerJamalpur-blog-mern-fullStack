@@ -172,13 +172,13 @@ export default function DashboardProfile() {
         <TextInput type="text" id="username" placeholder="username" defaultValue={currentUser.username} onChange={handleChange}/>
         <TextInput type="email" id="email" placeholder="email" defaultValue={currentUser.email} onChange={handleChange}/>
         <TextInput type="password" id="password" placeholder="password" onChange={handleChange}/>
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline disabled={loading || imageFileUploading}>
+        <Button type="submit" gradientDuoTone="greenToBlue" outline disabled={loading || imageFileUploading}>
             {loading ? "loading" : "Update"}
         </Button>
         {/* For create post */}
         {(currentUser.isAdmin || !currentUser.isAdmin) && (
           <Link to="/create-post">
-            <Button type="button" gradientDuoTone="purpleToPink" className="w-full">
+            <Button type="button" gradientDuoTone="greenToBlue" className="w-full">
               Create a post
             </Button>
           </Link>

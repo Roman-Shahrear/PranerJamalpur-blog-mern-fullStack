@@ -144,7 +144,7 @@ export default function CommentSection({postId}) {
             <div className="flex justify-between items-center mt-5">
                 <p className="text-gray-500 text-xs">{500 - comment.length} characters remaining
                 </p>
-                <Button outline gradientDuoTone="purpleToBlue" type="submit">
+                <Button outline gradientDuoTone="greenToBlue" type="submit">
                     Submit
                 </Button>
             </div>
