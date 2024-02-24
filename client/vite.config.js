@@ -11,4 +11,12 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: undefined,
+        chunkFileNames: 'chunks/[name]-[hash].js',
+      },
+    },
+  },
 });
