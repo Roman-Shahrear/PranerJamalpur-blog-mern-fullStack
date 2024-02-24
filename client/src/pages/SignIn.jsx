@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInFailure, signInSuccess } from "../redux/user/userSlice";
 import OAuth from "../components/OAuth";
-
+import pranerjamalpur from '../images/pranerjamalpur.svg';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -55,11 +55,11 @@ export default function SignIn() {
           {/* left-side*/}
       <div className="flex-1">
       <Link to="/" className="font-bold dark:text-white text-3xl">
-            <span className="px-2 py-1 bg-gradient-to-r from-yellow-300 via-green-500 to-blue-300 rounded-lg text-white">প্রাণেরজামালপুর</span>
-            Blog
+            <span>
+              <img className="px-1 py-1 rounded-full border-2 border-green-400 " src={pranerjamalpur} alt="pranerjamalpur" />
+            </span>
         </Link>
-        <p className="text-sm mt-5">This is a first Blog web application which from Praner Jamalpur group.Be connect with us as a group member using email and password
-          or with Google.</p>
+        <p className="text-sm mt-5">This is a first Blog web application which from Praner Jamalpur group or Praner Jamalpur page.Now we are exist at web application also, It is one of the popular media of Jamalpur. We want to all the news to give at first in Praner Jamalpur . So, let to Praner Jamalpur helped for move forward as a true and fair media. Be connect with us also as a Blog member using through with your email and password or with your Google Account.</p>
       </div>
        {/* right-side*/}
 
@@ -87,7 +87,7 @@ export default function SignIn() {
         </form>
         <div className="flex gap-2 text-sm mt-5">
           <span>Don't have an account?</span>
-          <Link to="/sign-up" className="text-blue-500">
+          <Link to="/sign-up" className="text-green-500 font-bold">
             Sign Up
           </Link>
         </div>

@@ -163,7 +163,7 @@ export default function PostPage() {
                         <video
                             key={index}
                             controls
-                            className="object-cover w-full"
+                            className="object-cover w-full h-64"
                         >
                             <source src={videoUrl} type="video/mp4" />
                             Your browser does not support the video tag.
@@ -171,7 +171,7 @@ export default function PostPage() {
                     ))}
                 </div>
             )}
-            <div className="flex justify-between p-3 border-b border-slate-500 mx-auto w-full max-w-2xl text-xs">
+            <div className="flex justify-between p-3 border-b border-teal-500 mx-auto w-full max-w-2xl text-xs">
                 <span>{post && new Date(post.createdAt).toLocaleDateString()}</span>
                 <span className="italic">
                     {post && post.content && (post.content.length / 1000).toFixed(0)} mins read

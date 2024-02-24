@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { useEffect, useState } from "react";
+import pranerjamalpur from '../images/pranerjamalpur.svg';
 
 export default function Header() {
   const path = useLocation().pathname;
@@ -53,10 +54,7 @@ export default function Header() {
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
-        <span className="px-2 py-1 bg-gradient-to-r from-yellow-300 via-green-500 to-blue-300 rounded-lg text-white">
-          প্রাণের জামালপুর
-        </span>
-        Blog
+        <img className="px-1 py-1 w-14 h-auto rounded-full border-2 border-green-400 " src={pranerjamalpur} alt="prander-jamalpur" />
       </Link>
       <form onSubmit={handleSubmit}>
         <TextInput
@@ -68,13 +66,13 @@ export default function Header() {
           onChange={(e)=> setSearchTerm(e.target.value)}
         />
       </form>
-      <Button className="w-12 h-10 lg:hidden" color="gray" pill>
+      <Button className="w-12 h-10 lg:hidden" color="green" pill>
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2">
         <Button
           className="w-12 h-10 hidden sm:inline"
-          color="gray"
+          color="green"
           pill
           onClick={() => {
             dispatch(toggleTheme());
@@ -115,11 +113,14 @@ export default function Header() {
         <Navbar.Link active={path === "/"} as={"div"}>
           <Link to="/">Home</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"} as={"div"}>
-          <Link to="/about">About</Link>
+        <Navbar.Link active={path === "/posts"} as={"div"}>
+          <Link to="/posts">Posts</Link>
         </Navbar.Link>
         <Navbar.Link active={path === "/projects"} as={"div"}>
           <Link to="/projects">Projects</Link>
+        </Navbar.Link>
+        <Navbar.Link active={path === "/about"} as={"div"}>
+          <Link to="/about">About</Link>
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>

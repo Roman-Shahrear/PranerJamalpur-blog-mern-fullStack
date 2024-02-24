@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { AiFillLike } from 'react-icons/ai';
-import { BsFillHeartFill } from 'react-icons/bs';
+import { GiRunningShoe } from "react-icons/gi";
 import { useSelector } from 'react-redux';
 import { FacebookIcon, FacebookShareButton, TwitterIcon, TwitterShareButton } from 'react-share';
 
@@ -49,7 +49,7 @@ const PostReact = ({ post, onLike, onLove }) => {
   return (
     <>
       {!loading ? (
-        <div className='flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2 mb-4'>
+        <div className='flex items-center pt-2 text-xs border-t border-teal-700 dark:border-teal-700 max-w-fit gap-2 mb-4'>
           <button
             type='button'
             onClick={() => postDetails && onLike(postDetails._id)}
@@ -66,36 +66,38 @@ const PostReact = ({ post, onLike, onLove }) => {
           <p className='text-gray-400'>
             {postDetails && postDetails.numberOfLikes > 0 &&
               postDetails.numberOfLikes +
-                ' ' +
-                (postDetails.numberOfLikes === 1 ? 'like' : 'likes')}
+                 ' '}
+                  {/* +
+                // (postDetails.numberOfLikes === 1 ? 'like' : 'likes')} */}
           </p>
 
           <button
             type='button'
             onClick={() => postDetails && onLove(postDetails._id)}
-            className={`text-gray-400 hover:text-red-500 ${
+            className={`pl-5 text-gray-400 hover:text-red-500 ${
               currentUser &&
               postDetails &&
-              postDetails.likes.includes(currentUser._id) &&
+              postDetails.loves.includes(currentUser._id) &&
               'text-red-500'
             }`}
           >
-              <BsFillHeartFill className='text-xl' />
+              <GiRunningShoe className='text-xl' />
           </button>
 
-          <p className='text-gray-400'>
+          <p className=' text-gray-400'>
             {postDetails && postDetails.numberOfLoves > 0 &&
               postDetails.numberOfLoves +
-                ' ' +
-                (postDetails.numberOfLoves === 1 ? 'love' : 'loves')}
+                ' ' 
+                // (postDetails.numberOfLoves === 1 ? 'love' : 'loves')}
+            }
           </p>
 
-          <FacebookShareButton url={shareUrl}>
+          <FacebookShareButton className='ml-5' url={shareUrl}>
            <FacebookIcon logofillcolor='white' round={true} style={{ width: '30px', height: '30px' }}>
            </FacebookIcon>
           </FacebookShareButton>
 
-          <TwitterShareButton url={shareUrl}>
+          <TwitterShareButton className='ml-5' url={shareUrl}>
             <TwitterIcon logofillcolor='white' round={true} style={{ width: '30px', height: '30px' }}>
               
             </TwitterIcon>

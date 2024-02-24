@@ -184,9 +184,9 @@ export default function DashboardProfile() {
           </Link>
         )}
       </form>
-      <div className="text-red-500 flex justify-between mt-5">
-        <span onClick={() => setShowModal(true)} className='cursor-pointer'>Delete Account</span>
-        <span onClick={handleSignOut} className="cursor-pointer">Sign Out</span>
+      <div className="flex justify-between mt-5">
+        <span onClick={() => setShowModal(true)} className='cursor-pointer font-bold text-red-500'>Delete Account</span>
+        <span onClick={handleSignOut} className="cursor-pointer font-bold text-green-500">Sign Out</span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">

@@ -7,6 +7,8 @@ import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/
 import { app } from "../firebase.js";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { FcCameraIdentification } from "react-icons/fc";
+import { FcClapperboard } from "react-icons/fc";
 
 export default function CreatePost() {
   const navigate = useNavigate();
@@ -127,7 +129,6 @@ export default function CreatePost() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try{
-        console.log("Form Data:", formData); // Log the form data for debugging
         const res = await fetch("/api/post/create", {
         method: "POST",
         headers: {
@@ -184,13 +185,15 @@ export default function CreatePost() {
             <option value="techRelate">Tech Relate</option>
           </Select>
         </div>
-        <div className="flex gap-4 items-center justify-between border-4 border-x-purple-600 border-double hover:border-solid p-3">
+        <div className="flex gap-4 items-center justify-between border-4 border-x-green-600 border-double hover:border-solid p-3">
+        <FcCameraIdentification className="text-xl"/>
           <FileInput
             type="file"
             accept="image/*"
             multiple
             onChange={handleImageFileChange}
           />
+          <FcClapperboard className="text-xl"/>
           <FileInput
             type="file"
             accept="video/*"

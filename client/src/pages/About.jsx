@@ -3,29 +3,38 @@ export default function About() {
     <div className='min-h-screen flex items-center justify-center'>
       <div className='max-w-2xl mx-auto p-3 text-center'>
         <div>
-          <h1 className='text-3xl font font-semibold text-center my-7'>
-          প্রাণের জামালপুর Blog
+          <h1 className='text-3xl font font-bold text-center my-7'>
+          প্রাণের জামালপুর ব্লগ
           </h1>
-          <div className='text-md text-gray-500 flex flex-col gap-6'>
-            <p>
-              Welcome to প্রাণের জামালপুর Blog! This blog was created by Roman Shahrear
-              as a personal project to share his thoughts and ideas with the
-              world. Sahand is a passionate developer who loves to write about
-              technology, coding, and everything in between.
+          <div className='text-md flex flex-col gap-6 mb-10'>
+            <p className="text-black-500">
+              Welcome to প্রাণের জামালপুর ব্লগ! This blog is created by Roman Shahrear,
+                We thank him from the bottom of our hearts and appreciate his hard work. It's about sharing our own thoughts and ideas with our community. So, 
+              Stay with the us life world of Praner Jamalpur. Notice that still this is under-develope version.
             </p>
 
-            <p>
-              On this blog, you'll find weekly articles and tutorials on topics
-              such as web development, software engineering, and programming
-              languages. Sahand is always learning and exploring new
-              technologies, so be sure to check back often for new content!
+            <p className="text-black-500">
+            প্রাণের নগরী নিয়ে সামাজিক যোগাযোগ মাধ্যমে জামালপুরের সবচাইতে বড় কমিউনিটি গড়ার লক্ষে, প্রাণের জামালপুর কাজ করে যাচ্ছে।
             </p>
 
-            <p>
-              We encourage you to leave comments on our posts and engage with
-              other readers. You can like other people's comments and reply to
-              them as well. We believe that a community of learners can help
-              each other grow and improve.
+            <p className="text-gray-500">
+              #প্রাণের জামালপুর
+
+              ব্লগ সদস্যদের সুবিধার্থে ব্লগের উদ্দেশ্যসমূহ তুলে ধরা হল:
+
+              আমাদের প্রিয় জামালপুরেকে সকলের সামনে পজিটিভলি তুলে ধরা।মূলত এটাই আমাদের গ্রুপের প্রধান উদ্দেশ্য।
+              গঠনমূলক আলোচনা ও সমালোচনা করুনঃ
+
+              গ্রুপটি প্রাণের জামালপুর এরিয়ার জামালপুর সদর, দেওয়ানগঞ্জ,বকশীগঞ্জে,সরিষাবাড়ি,মেলান্দ,মাদারগঞ্জ, নান্দিনা ও ইসলামপুর আপামর জনসাধারণের। এলাকার, ইতিহাস,এতিহ্য ইত্যাদি বিষয় আপনিও পোস্টের মাধ্যমে তুলে ধরতে পারেন। কাউকে কটাক্ষ করে কোন কিছু লেখা যাবেনা।
+
+              ১-এই গ্রুপে সেলস বা প্রডাক্ট নিয়ে দেয়া পোস্ট এপ্রুভ হয়না।
+              ২- এলাকার চলতি ঘটনাবলী যেমন, দুর্ঘটনা, কোন গন্যমান্য ব্যক্তির ইন্তেকাল বা এলাকার লোক জাতীয় পর্যায়ে গর্ব করার মত আছে তাকে নিয়ে লিখতে পারেন।
+              ৩- পোস্ট কিংবা কমেন্টে কোন মেম্বারকে ব্যক্তিগত আক্রমণ করা যাবেনা। কোন নারী মেম্বারকে মেসেজ দিয়ে বিরক্ত করা যাবেনা।
+              ৪- শিক্ষক লেখক, কবি,খেলোয়াড়, বিভিন্ন শ্রেণী পেশার মানুষদের ভাল কাজগুলো গ্রুপে পোস্ট দিয়ে তুলে ধরতে পারেন।
+              ৫- রাষ্ট্র বিরোধী পোস্ট দেয়া যাবেনা।
+
+              আশা করব ব্লগের সকল সদস্যই স্বক্রিয় ভুমিকা পালন করে ব্লগ ওয়েব অ্যাপ্লিকেশনের উদ্দেশ্য সফল করতে সহায়ক হবেন।
+              এছাড়া আমাদের পেইজের এবং গ্রুপের সাথেও যুক্ত থাকুন।
             </p>
           </div>
         </div>

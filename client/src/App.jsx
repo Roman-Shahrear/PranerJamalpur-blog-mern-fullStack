@@ -14,6 +14,7 @@ import UpdatePost from "./pages/UpdatePost"
 import PostPage from "./pages/PostPage"
 import ScrollToTop from "./components/ScrollToTop"
 import Search from "./pages/Search"
+import Posts from "./pages/Posts"
 
 
 
@@ -37,6 +38,7 @@ export default function App() {
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/update-post/:postId" element={<UpdatePost />} />
           </Route>
+          <Route path="/posts" element={<Posts />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/post/:postSlug" element={<PostPage />} />
         </Routes>
