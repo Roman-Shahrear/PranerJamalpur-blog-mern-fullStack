@@ -7,7 +7,8 @@ import postRoutes from "./routes/post.route.js";
 import commentRoutes from "./routes/comment.route.js";
 import cookieParser from "cookie-parser";
 import path from 'path';
-
+import serverless from "serverless-http";
+import { app } from "../api/server.js";
 
 dotenv.config();
 
@@ -20,16 +21,10 @@ mongoose.connect(process.env.MONGO_URI)
 });
 
 const __dirname = path.resolve();
-
 const app = express();
 
 app.use(express.json());
 app.use(cookieParser());
-
-app.listen(3000, () => {
-    console.log('Server is running on port 3000!');
-  });
-
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -53,3 +48,15 @@ app.use((err, req, res, next)=>{
         message,
     });
 });
+
+
+export {app};
+
+app.listen(3000, () => {
+    console.log('Server is running on port 3000!');
+  });
+
+
+
+
+
