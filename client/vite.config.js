@@ -22,5 +22,6 @@ export default defineConfig({
         chunkFileNames: 'chunks/[name]-[hash].js',
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
 });
