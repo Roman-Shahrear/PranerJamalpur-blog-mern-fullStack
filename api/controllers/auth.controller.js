@@ -1,7 +1,9 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
+import crypto from "crypto";
 import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
+import { sendEmail } from "../utils/sendEmail.js";
 
 //For signup
 export const signup = async (req, res, next) => {
@@ -59,6 +61,8 @@ export const signin = async(req, res, next)=>{
     }
 }
 
+
+//For google account
 export const google = async (req, res, next) => {
     const { email, name, googlePhotoUrl } = req.body;
     try {
@@ -105,4 +109,72 @@ export const google = async (req, res, next) => {
       next(error);
     }
   };
+
+  // For forgotPassword
+  export const forgotPassword = async (req, res, next) => {
+    try {
+      //get user based on email  
+      const user = await User.findOne({email: req.body.email})
+      if(!user) {
+        return next(errorHandler(404, `Can not find User with this given email.`))
+    }
+    // generate random token
+      const resetToken = crypto.randomBytes(32).toString('hex');
+      // save now reset token in user document
+      user.resetPasswordToken = resetToken;
+      user.resetPasswordExpires = Date.now() + 3600000;
+      await user.save();
+
+      // Sign the token with a secret and set an expiration time
+      const token = jwt.sign(
+        { id: user._id },
+        process.env.JWT_RESET_SECRET,
+        { expiresIn: '1h' }
+      );
+
+
+      const resetLink = `${process.env.VITE_CLIENT_URL}/resetpassword?token=${token}`;
+
+      const emailOptions = {
+        email: user.email,
+        subject: 'Recovery Password',
+        message: `Click the following link to reset your password: ${resetLink} \n This token will be Expires in 1 hour`,
+        html: `click the following link to reset your password: <a href = "${resetLink}">${resetLink} </a>`,
+      };
+
+      await sendEmail(emailOptions);
+
+      res.json({ message: 'Password reset link sent to your email.' });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  // For resetPassword Token
+export const resetPassword = async (req, res, next) => {
+  const { resetToken, newPassword } = req.body;
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: resetToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return next(errorHandler(404, 'User not found or invalid or expired reset token.'));
+    }
+
+    // update user password and reset token fields
+    const hashedPassword = bcryptjs.hashSync(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+
+    await user.save();
+
+    res.json({ message: 'Password reset successful.' });
+  } catch (error) {
+    next(error);
+  }
+};
   
