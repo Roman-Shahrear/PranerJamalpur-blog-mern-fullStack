@@ -15,6 +15,8 @@ import PostPage from "./pages/PostPage"
 import ScrollToTop from "./components/ScrollToTop"
 import Search from "./pages/Search"
 import Posts from "./pages/Posts"
+import ForgotPassword from "./components/ForgotPassword"
+import ResetPassword from "./components/ResetPassword"
 
 
 
@@ -28,6 +30,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/search" element={<Search />} />
           <Route element={<PrivateRoute />}>

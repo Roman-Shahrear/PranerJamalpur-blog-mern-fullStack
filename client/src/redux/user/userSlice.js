@@ -5,6 +5,7 @@ const initialState = {
     currentUser: null,
     error: null,
     loading: false,
+    successMessage: null,
 }
 
 const userSlice = createSlice({
@@ -55,9 +56,25 @@ const userSlice = createSlice({
             state.error = null;
             state.loading = false;
           },
+          forgotPasswordStart: (state) => {
+            state.error = null;
+            state.successMessage = null;
+          },
+          forgotPasswordSuccess: (state, action) => {
+            state.error = null;
+            state.successMessage = action.payload;
+            setTimeout(() => {
+              state.successMessage = null;
+            }, 5000);
+          },
+          forgotPasswordFailure: (state, action) => {
+            state.error = action.payload;
+            state.successMessage = null;
+          },
     },
 });
 
-export const { signInStart ,signInFailure, signInSuccess, updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure, signoutSuccess } = userSlice.actions;
+export const { signInStart ,signInFailure, signInSuccess, updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure,
+  signoutSuccess, forgotPasswordStart, forgotPasswordSuccess,  forgotPasswordFailure } = userSlice.actions;
 
 export default userSlice.reducer;

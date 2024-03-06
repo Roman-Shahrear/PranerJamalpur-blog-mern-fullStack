@@ -49,7 +49,7 @@ const PostReact = ({ post, onLike, onLove }) => {
   return (
     <>
       {!loading ? (
-        <div className='flex items-center pt-2 text-xs border-t border-teal-700 dark:border-teal-700 max-w-fit gap-2 mb-4'>
+        <div className='flex items-center pt-2 text-xs max-w-fit gap-2 mb-4'>
           <button
             type='button'
             onClick={() => postDetails && onLike(postDetails._id)}
@@ -60,7 +60,7 @@ const PostReact = ({ post, onLike, onLove }) => {
               'text-blue-500'
             }`}
           >
-            <AiFillLike  className='text-xl' />
+            <AiFillLike  className='text-4xl' />
           </button>
 
           <p className='text-gray-400'>
@@ -81,7 +81,7 @@ const PostReact = ({ post, onLike, onLove }) => {
               'text-red-500'
             }`}
           >
-              <GiRunningShoe className='text-xl' />
+              <GiRunningShoe className='text-4xl' />
           </button>
 
           <p className=' text-gray-400'>

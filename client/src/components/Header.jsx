@@ -54,7 +54,7 @@ export default function Header() {
         to="/"
         className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white"
       >
-        <img className="px-1 py-1 w-14 h-auto rounded-full border-2 border-green-400 " src={pranerjamalpur} alt="prander-jamalpur" />
+        <img className="px-1 py-1 w-14 h-auto rounded-full border-2 border-green-400 dark:bg-white " src={pranerjamalpur} alt="prander-jamalpur" />
       </Link>
       <form onSubmit={handleSubmit}>
         <TextInput

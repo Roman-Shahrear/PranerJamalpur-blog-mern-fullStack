@@ -114,7 +114,7 @@ export default function CommentSection({postId}) {
       }
     };
     return (
-    <div className="max-w-2xl mx-auto w-full p-3">
+    <div className="max-w-2xl mx-auto w-full p-3 bg-green-50 rounded-lg">
       { currentUser ? 
       ( 
         <div className="flex items-center gap-1 my-5 text-gray-500 text-sm">
@@ -134,14 +134,15 @@ export default function CommentSection({postId}) {
         </div>
       )}
       {currentUser && (
-        <form onSubmit={handleSubmit} className="border border-teal-500 rounded-md p-3">
+        <form onSubmit={handleSubmit} className="border border-teal-500 rounded-lg p-3">
             <Textarea placeholder="Add a comment..." 
-                rows="3"
+                rows="2"
                 maxLength="500"    
                 onChange={(e)=> setComment(e.target.value)}
                 value={comment}
+                className="bg-green-50"
             />
-            <div className="flex justify-between items-center mt-5">
+            <div className="flex justify-between items-center mt-2">
                 <p className="text-gray-500 text-xs">{500 - comment.length} characters remaining
                 </p>
                 <Button outline gradientDuoTone="greenToBlue" type="submit">

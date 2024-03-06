@@ -146,13 +146,14 @@ export default function PostPage() {
                 </Button>
             </NavLink>
             {post?.image && post.image.length > 0 && (
-                <div className="mt-10 p-3 w-full flex flex-wrap gap-4">
+                <div className="mt-10 p-3 w-full flex  flex-wrap gap-4">
                     {post.image.map((imageUrl, index) => (
                         <img
                             key={index}
                             src={imageUrl}
                             alt={`image-${index}`}
                             className="object-cover w-full"
+                            
                         />
                     ))}
                 </div>
@@ -188,14 +189,15 @@ export default function PostPage() {
             </div> */}
 
             {post && (
-              <div>
+              <div className="flex justify-center mt-2 border-t-2 border-teal-700 dark:border-teal-700">
                 <PostReact key={post._id} post={post} onLike={handleLike} onLove={handleLove}/>
               </div>
             )}
-            <div className='max-w-4xl mx-auto w-full'>
-                <CallToAction />
-            </div>
             <CommentSection postId={post._id}/>
+
+            {/* <div className='max-w-4xl mx-auto w-full'>
+                <CallToAction />
+            </div> */}
 
             <div className='flex flex-col justify-center items-center mb-5'>
                 <h1 className='text-xl mt-5'>Recent articles</h1>

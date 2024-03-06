@@ -56,7 +56,7 @@ export default function SignIn() {
       <div className="flex-1">
       <Link to="/" className="font-bold dark:text-white text-3xl">
             <span>
-              <img className="px-1 py-1 rounded-full border-2 border-green-400 " src={pranerjamalpur} alt="pranerjamalpur" />
+              <img className="px-1 py-1 rounded-full border-2 border-green-400 dark:bg-white" src={pranerjamalpur} alt="pranerjamalpur" />
             </span>
         </Link>
         <p className="text-sm mt-5">This is a first Blog web application which from Praner Jamalpur group or Praner Jamalpur page.Now we are exist at web application also, It is one of the popular media of Jamalpur. We want to all the news to give at first in Praner Jamalpur . So, let to Praner Jamalpur helped for move forward as a true and fair media. Be connect with us also as a Blog member using through with your email and password or with your Google Account.</p>
@@ -89,6 +89,9 @@ export default function SignIn() {
           <span>Don't have an account?</span>
           <Link to="/sign-up" className="text-green-500 font-bold">
             Sign Up
+          </Link>
+          <Link to="/forgot-password" className="text-red-500 font-bold pl-1 ml-12 text-xs">
+            Forgot Password
           </Link>
         </div>
         {

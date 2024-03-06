@@ -55,7 +55,7 @@ export default function SignUp() {
       <div className="flex-1">
       <Link to="/" className="font-bold dark:text-white text-3xl">
             <span>
-              <img className="px-1 py-1 rounded-full border-2 border-green-400" src={pranerjamalpur} alt="pranerjamalpur" />
+              <img className="px-1 py-1 rounded-full border-2 border-green-400 dark:bg-white" src={pranerjamalpur} alt="pranerjamalpur" />
             </span>
             
         </Link>
