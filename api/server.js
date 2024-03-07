@@ -19,15 +19,13 @@ mongoose.connect(process.env.MONGO_URI)
     console.log(err);
 });
 
+
 const __dirname = path.resolve();
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
-
-app.listen(3000, () => {
-    console.log('Server is running on port 3000!');
-});
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -53,6 +51,7 @@ app.use((err, req, res, next)=>{
 });
 
 
-
-
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 

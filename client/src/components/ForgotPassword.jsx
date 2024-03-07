@@ -17,8 +17,8 @@ export default function ForgotPassword() {
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   const [isSuccessVisible, setSuccessVisible] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
+  const handleChange = ({ target }) => {
+    setFormData({ ...formData, [target.id]: target.value.trim() });
   };
 
   const handleForgotPassword = async (e) => {
@@ -30,7 +30,6 @@ export default function ForgotPassword() {
     try {
       dispatch(forgotPasswordStart());
       setButtonDisabled(true);
-
       const res = await fetch("/api/auth/forgotpassword", {
         method: "POST",
         headers: {

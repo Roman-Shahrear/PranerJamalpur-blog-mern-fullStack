@@ -71,10 +71,25 @@ const userSlice = createSlice({
             state.error = action.payload;
             state.successMessage = null;
           },
+          setPasswordStart: (state) => {
+            state.error = null;
+            state.successMessage = null;
+          },
+          setPasswordSuccess: (state, action) => {
+            state.error = null;
+            state.successMessage = action.payload;
+            setTimeout(() => {
+              state.successMessage = null;
+            }, 5000);
+          },
+          setPasswordFailure: (state, action) => {
+            state.error = action.payload;
+            state.successMessage = null;
+          },
     },
 });
 
 export const { signInStart ,signInFailure, signInSuccess, updateStart, updateSuccess, updateFailure, deleteUserStart, deleteUserSuccess, deleteUserFailure,
-  signoutSuccess, forgotPasswordStart, forgotPasswordSuccess,  forgotPasswordFailure } = userSlice.actions;
+  signoutSuccess, forgotPasswordStart, forgotPasswordSuccess,  forgotPasswordFailure, setPasswordStart, setPasswordSuccess, setPasswordFailure } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -5,6 +5,7 @@ import { errorHandler } from "../utils/error.js";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/sendEmail.js";
 
+
 //For signup
 export const signup = async (req, res, next) => {
     const { username, email, password } = req.body;
@@ -118,28 +119,20 @@ export const google = async (req, res, next) => {
       if(!user) {
         return next(errorHandler(404, `Can not find User with this given email.`))
     }
-    // generate random token
+      // generate random token
       const resetToken = crypto.randomBytes(32).toString('hex');
-      // save now reset token in user document
-      user.resetPasswordToken = resetToken;
+      const hashedResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+     
+      user.resetPasswordToken = hashedResetToken;
       user.resetPasswordExpires = Date.now() + 3600000;
       await user.save();
 
-      // Sign the token with a secret and set an expiration time
-      const token = jwt.sign(
-        { id: user._id },
-        process.env.JWT_RESET_SECRET,
-        { expiresIn: '1h' }
-      );
-
-
-      const resetLink = `${process.env.VITE_CLIENT_URL}/resetpassword?token=${token}`;
-
+      const resetLink = `${req.protocol}://${req.get('host')}/reset-password?token=${hashedResetToken}`;
+      const message = `You have received a password reset request. Please use the below link to reset your password\n\n${resetLink}\n\nThis password valid for only 1 hour`
       const emailOptions = {
         email: user.email,
         subject: 'Recovery Password',
-        message: `Click the following link to reset your password: ${resetLink} \n This token will be Expires in 1 hour`,
-        html: `click the following link to reset your password: <a href = "${resetLink}">${resetLink} </a>`,
+        message: message,
       };
 
       await sendEmail(emailOptions);
@@ -150,31 +143,38 @@ export const google = async (req, res, next) => {
     }
   };
 
-  // For resetPassword Token
-export const resetPassword = async (req, res, next) => {
-  const { resetToken, newPassword } = req.body;
 
-  try {
-    const user = await User.findOne({
-      resetPasswordToken: resetToken,
-      resetPasswordExpires: { $gt: Date.now() },
-    });
-
-    if (!user) {
-      return next(errorHandler(404, 'User not found or invalid or expired reset token.'));
-    }
-
-    // update user password and reset token fields
-    const hashedPassword = bcryptjs.hashSync(newPassword, 10);
-    user.password = hashedPassword;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpires = undefined;
-
-    await user.save();
-
-    res.json({ message: 'Password reset successful.' });
-  } catch (error) {
-    next(error);
-  }
-};
+  export const resetPassword = async (req, res, next) => {
+    try {
+      // Get the token from the request parameters
+      const token = req.params.token;
+      // Find the user with the matching token and a valid expiration time
+      const user = await User.findOne({
+        resetPasswordToken: token,
+        resetPasswordExpires: { $gt: Date.now() },
+      });
   
+      // Check if the user is found
+      if (!user) {
+        return next(errorHandler(400, `Token is invalid or has expired`));
+      }
+      // Set the new password and clear reset token fields
+      const newPassword = req.body.password;
+      const hashedPassword = bcryptjs.hashSync(newPassword, 10);
+      user.password = hashedPassword;
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+  
+      await user.save();
+  
+      const loginToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      res.status(200).json({
+        success: true,
+        message: 'Password reset successful.',
+        token: loginToken,
+      });
+    } catch (error) {
+      console.error('Error in resetPassword:', error);
+      next(error);
+    }
+  };
